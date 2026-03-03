@@ -16,15 +16,16 @@ SkillNex is a SaaS platform for skill development and tracking, built with Next.
 app/                   # Next.js App Router
   layout.tsx           # Root layout (wraps with AuthProvider)
   providers.tsx        # Client-side providers (AuthProvider)
-  page.tsx             # Landing page (redirects to dashboard if logged in)
+  page.tsx             # Home — redirects to /login
   not-found.tsx        # 404 page
   globals.css          # Global styles and CSS variables
   (auth)/              # Auth route group
     layout.tsx         # Centered layout for auth pages
     login/page.tsx     # Login + signup page
+    complete-profile/page.tsx  # Profile creation form (post-signup)
   (dashboard)/         # Dashboard route group
     layout.tsx         # Dashboard layout
-    dashboard/page.tsx # Protected dashboard page
+    dashboard/page.tsx # Protected dashboard page (requires profile)
   api/                 # API route handlers
 components/            # React components
   ui/                  # shadcn/ui components
@@ -33,15 +34,49 @@ lib/                   # Utility functions
   utils.ts             # cn() helper
   constants.ts         # Site config
   supabaseClient.ts    # Supabase client instance
-  AuthContext.tsx       # Auth context provider + useAuth hook
+  AuthContext.tsx       # Auth context provider + useAuth hook (includes profile state)
 types/                 # TypeScript type definitions
+  index.ts             # Profile type, SiteConfig
 public/                # Static assets
 ```
 
-## Auth Flow
-- `/` — Landing page, redirects to `/dashboard` if authenticated
+## Auth + Profile Flow
+- `/` — Redirects to `/login`
 - `/login` — Login/signup form (email + password via Supabase)
-- `/dashboard` — Protected, redirects to `/login` if not authenticated
+- `/complete-profile` — Profile creation form (shown after first login if no profile exists)
+- `/dashboard` — Protected, redirects to `/login` if not authenticated, to `/complete-profile` if no profile
+
+## Supabase Table: profiles
+- `id` (uuid, references auth.users, primary key)
+- `full_name` (text)
+- `institution` (text)
+- `subject` (text)
+- `experience_years` (integer)
+- `location` (text)
+- `bio` (text)
+- `avatar_url` (text)
+- `created_at` (timestamp with time zone, default now())
+
+SQL to create:
+```sql
+CREATE TABLE profiles (
+  id UUID REFERENCES auth.users ON DELETE CASCADE PRIMARY KEY,
+  full_name TEXT NOT NULL DEFAULT '',
+  institution TEXT DEFAULT '',
+  subject TEXT DEFAULT '',
+  experience_years INTEGER DEFAULT 0,
+  location TEXT DEFAULT '',
+  bio TEXT DEFAULT '',
+  avatar_url TEXT DEFAULT '',
+  created_at TIMESTAMPTZ DEFAULT now()
+);
+
+ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Users can view own profile" ON profiles FOR SELECT USING (auth.uid() = id);
+CREATE POLICY "Users can insert own profile" ON profiles FOR INSERT WITH CHECK (auth.uid() = id);
+CREATE POLICY "Users can update own profile" ON profiles FOR UPDATE USING (auth.uid() = id);
+```
 
 ## Environment Variables
 - `NEXT_PUBLIC_SUPABASE_URL` — Supabase project URL
