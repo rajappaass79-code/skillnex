@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 
-export default function DashboardPage() {
+export default function Dashboard() {
   const { user, loading, signOut } = useAuth();
   const router = useRouter();
 
@@ -15,55 +15,33 @@ export default function DashboardPage() {
     }
   }, [user, loading, router]);
 
-  if (loading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center">
-        <p className="text-muted-foreground" data-testid="text-loading">
-          Loading...
-        </p>
-      </div>
-    );
+  if (loading || !user) {
+    return <div className="p-8" data-testid="text-loading">Loading...</div>;
   }
 
-  if (!user) {
-    return null;
-  }
-
-  const handleSignOut = async () => {
+  const handleLogout = async () => {
     await signOut();
     router.push("/login");
   };
 
   return (
-    <div className="p-6 max-w-4xl mx-auto space-y-6">
-      <div className="flex items-center justify-between gap-4 flex-wrap">
-        <div>
-          <h1
-            className="text-3xl font-bold tracking-tight"
-            data-testid="text-dashboard-title"
-          >
-            Dashboard
-          </h1>
-          <p
-            className="text-muted-foreground mt-1"
-            data-testid="text-user-email"
-          >
-            {user.email}
-          </p>
-        </div>
-        <Button
-          variant="outline"
-          onClick={handleSignOut}
-          data-testid="button-sign-out"
-        >
-          Sign Out
-        </Button>
-      </div>
-      <div className="rounded-xl border bg-card border-card-border p-6">
-        <p className="text-muted-foreground" data-testid="text-welcome">
-          Welcome to SkillNex. Start building your skills here.
-        </p>
-      </div>
+    <div className="min-h-screen p-8">
+      <h1
+        className="text-2xl font-bold mb-4"
+        data-testid="text-dashboard-title"
+      >
+        Welcome to SkillNex
+      </h1>
+      <p className="mb-4" data-testid="text-user-email">
+        Logged in as: {user.email}
+      </p>
+      <Button
+        variant="destructive"
+        onClick={handleLogout}
+        data-testid="button-logout"
+      >
+        Logout
+      </Button>
     </div>
   );
 }
