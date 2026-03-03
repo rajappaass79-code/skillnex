@@ -8,6 +8,7 @@ const nextConfig: NextConfig = {
     "127.0.0.1",
     "localhost",
   ],
+  devIndicators: false,
 };
 
 export default nextConfig;
