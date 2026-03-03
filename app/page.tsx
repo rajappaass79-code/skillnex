@@ -1,14 +1,8 @@
-"use client";
-
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
-
 export default function Home() {
-  const router = useRouter();
-
-  useEffect(() => {
-    router.replace("/login");
-  }, [router]);
-
-  return null;
+  return (
+    <main style={{ padding: "40px", fontFamily: "sans-serif" }}>
+      <h1>SkillNex is Live 🚀</h1>
+      <p>System healthy.</p>
+    </main>
+  );
 }
