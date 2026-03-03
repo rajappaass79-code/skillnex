@@ -43,6 +43,7 @@
     "cmdk": "^1.1.1",
     "date-fns": "^3.6.0",
     "eslint-config-next": "^16.1.6",
+    "glob": "^10.5.0",
     "input-otp": "^1.4.2",
     "lucide-react": "^0.453.0",
     "minimatch": "^10.2.4",
@@ -61,14 +62,17 @@
     "@types/node": "20.19.27",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
-    "autoprefixer": "^10.4.20",
+    "autoprefixer": "^10.4.27",
     "postcss": "^8.4.47",
-    "tailwindcss": "^3.4.17",
+    "tailwindcss": "^3.4.19",
     "typescript": "5.6.3"
   },
   "overrides": {
     "drizzle-kit": {
       "@esbuild-kit/esm-loader": "npm:tsx@^4.20.4"
+    },
+    "glob": {
+      "minimatch": "^10.2.3"
     }
   },
   "optionalDependencies": {
