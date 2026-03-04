@@ -11,9 +11,9 @@ externalPort = 80
 
 [env]
 PORT = "5000"
-
-
-
+Build command: npm run build
+Run command: npm run start
+Health check path: /api/health
 [workflows]
 runButton = "Project"
 
