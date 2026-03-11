@@ -45,7 +45,7 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen p-8">
       <h1 className="text-2xl font-bold" data-testid="text-dashboard-title">
-        Welcome to SkillNex 🚀
+        Welcome to Skillonize Network 🚀
       </h1>
       <p className="mt-4" data-testid="text-profile-status">Your profile is complete.</p>
     </div>

@@ -3,7 +3,7 @@ import { Providers } from "./providers";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "SkillNex - Level Up Your Skills",
+  title: "Skillonize Network - Level Up Your Skills",
   description: "A modern SaaS platform for skill development and tracking",
 };
 

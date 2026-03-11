@@ -38,7 +38,7 @@ export default function AIAssistant() {
         className="text-2xl font-bold mb-6"
         data-testid="text-ai-title"
       >
-        SkillNex AI – Teaching Assistant (Beta)
+        Skillonize Network AI – Teaching Assistant (Beta)
       </h1>
 
       <select
