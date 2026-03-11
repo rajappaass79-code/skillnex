@@ -1,45 +1,22 @@
-"use client";
+'use client'
 
-import { useEffect, useState } from "react";
-import { supabase } from "@/lib/supabaseClient";
-import { useRouter } from "next/navigation";
+import { useState } from "react"
 
-export default function Community() {
-  const router = useRouter();
-  const [loading, setLoading] = useState(true);
+export default function CommunityPage() {
 
-  useEffect(() => {
-    const checkAuth = async () => {
-      if (!supabase) {
-        router.push("/login");
-        return;
-      }
-
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-
-      if (!session) {
-        router.push("/login");
-        return;
-      }
-
-      setLoading(false);
-    };
-
-    checkAuth();
-  }, [router]);
-
-  if (loading) return <div className="p-8" data-testid="text-loading">Loading...</div>;
+  const [post,setPost] = useState("")
 
   return (
-    <div className="min-h-screen p-8">
-      <h1 className="text-2xl font-bold" data-testid="text-community-title">
-        Community
-      </h1>
-      <p className="mt-4" data-testid="text-community-description">
-        Connect with fellow educators, share resources, and grow together.
-      </p>
+    <div>
+      <h1>Community</h1>
+
+      <textarea
+        placeholder="Share an idea with other educators..."
+        value={post}
+        onChange={(e)=>setPost(e.target.value)}
+      />
+
+      <button>Post</button>
     </div>
-  );
+  )
 }
