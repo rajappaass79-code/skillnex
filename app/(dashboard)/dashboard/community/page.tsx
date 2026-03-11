@@ -1,13 +1,46 @@
 'use client'
 
 import { useState } from "react"
+import { createClient } from "@supabase/supabase-js"
 
-export default function CommunityPage() {
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+)
+
+export default function Community() {
 
   const [post,setPost] = useState("")
+  const [message,setMessage] = useState("")
+
+  const handlePost = async () => {
+
+    const { data: { user } } = await supabase.auth.getUser()
+
+    if(!user){
+      setMessage("Please login")
+      return
+    }
+
+    const { error } = await supabase
+      .from("posts")
+      .insert({
+        user_id:user.id,
+        content:post
+      })
+
+    if(error){
+      setMessage("Error posting")
+    }else{
+      setMessage("Posted successfully")
+      setPost("")
+    }
+  }
 
   return (
-    <div>
+
+    <div style={{padding:20}}>
+
       <h1>Community</h1>
 
       <textarea
@@ -16,7 +49,14 @@ export default function CommunityPage() {
         onChange={(e)=>setPost(e.target.value)}
       />
 
-      <button>Post</button>
+      <br/><br/>
+
+      <button onClick={handlePost}>
+        Post
+      </button>
+
+      <p>{message}</p>
+
     </div>
   )
 }
