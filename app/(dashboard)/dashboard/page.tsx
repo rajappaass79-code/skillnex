@@ -46,7 +46,11 @@ export default function Dashboard() {
   if (loading) return <div className="p-8" data-testid="text-loading">Loading...</div>;
 
   if (!session) {
-    return <div data-testid="text-please-login">Please login again.</div>;
+    return (
+      <div style={{padding:20}} data-testid="text-please-login">
+        Session not found. Please log in again.
+      </div>
+    )
   }
 
   return (
