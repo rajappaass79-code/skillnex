@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 export default function Dashboard() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
+  const [session, setSession] = useState<any>(null);
 
   useEffect(() => {
     const checkProfile = async () => {
@@ -19,8 +20,10 @@ export default function Dashboard() {
         data: { session },
       } = await supabase.auth.getSession();
 
+      setSession(session);
+
       if (!session) {
-        router.push("/login");
+        setLoading(false);
         return;
       }
 
@@ -41,6 +44,10 @@ export default function Dashboard() {
   }, [router]);
 
   if (loading) return <div className="p-8" data-testid="text-loading">Loading...</div>;
+
+  if (!session) {
+    return <div data-testid="text-please-login">Please login again.</div>;
+  }
 
   return (
     <div className="min-h-screen p-8">
