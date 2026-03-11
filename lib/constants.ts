@@ -1,5 +1,5 @@
 export const siteConfig = {
   name: "Skillonize Network",
-  description: "A modern SaaS platform for skill development and tracking",
+  description: "Where Educators Connect and Grow",
   url: "",
 } as const;

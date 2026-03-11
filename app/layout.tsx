@@ -3,8 +3,8 @@ import { Providers } from "./providers";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Skillonize Network - Level Up Your Skills",
-  description: "A modern SaaS platform for skill development and tracking",
+  title: "Skillonize Network - Where Educators Connect and Grow",
+  description: "Skillonize Network - Where Educators Connect and Grow",
 };
 
 export default function RootLayout({

@@ -1,7 +1,7 @@
 # Skillonize Network - Next.js SaaS MVP
 
 ## Overview
-Skillonize Network is a SaaS platform for skill development and tracking, built with Next.js App Router.
+Skillonize Network is a platform where educators connect and grow, built with Next.js App Router.
 
 ## Tech Stack
 - **Framework:** Next.js 16 (App Router)
