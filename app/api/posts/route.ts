@@ -7,8 +7,8 @@ export async function POST(req: Request) {
     console.log("REQUEST BODY:", body);
 
     const supabase = createClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+      process.env.SUPABASE_URL!,
+      process.env.SUPABASE_ANON_KEY!
     );
 
     const { content, user_id } = body;
