@@ -30,9 +30,16 @@ export async function POST(req: Request) {
 
   const { content } = body;
 
+  const { data: { user } } = await supabase.auth.getUser();
+
   const { data, error } = await supabase
     .from("posts")
-    .insert([{ content: content, name: "Educator" }]);
+    .insert([
+      {
+        user_id: user?.id,
+        content: content
+      }
+    ]);
 
   if (error) {
     return Response.json({ error: error.message }, { status: 500 });
