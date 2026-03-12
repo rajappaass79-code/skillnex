@@ -14,7 +14,7 @@ export async function GET() {
       content,
       created_at,
       user_id,
-      profiles:profiles!posts_user_id_fkey (
+      profiles (
         full_name,
         Institution,
         Subject
