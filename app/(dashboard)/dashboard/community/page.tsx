@@ -32,7 +32,7 @@ export default function Community() {
 
       <button
         onClick={handlePost}
-        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors"
+        className="bg-teal-600 hover:bg-teal-700 text-white font-semibold px-5 py-2 rounded-lg transition duration-200 shadow-sm"
       >
         Post
       </button>
