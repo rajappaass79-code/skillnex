@@ -27,24 +27,23 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
-  const body = await req.json();
 
-  const { content, user_id } = body;
+  const body = await req.json()
 
-  console.log("POST /api/posts — received user_id:", user_id, "content:", content);
+  const { content, user_id } = body
 
   const { data, error } = await supabase
     .from("posts")
     .insert([
       {
-        user_id: user_id,
-        content: content
+        content,
+        user_id
       }
-    ]);
+    ])
 
   if (error) {
-    return Response.json({ error: error.message }, { status: 500 });
+    return Response.json({ error: error.message }, { status: 500 })
   }
 
-  return Response.json({ success: true });
+  return Response.json({ success: true })
 }
