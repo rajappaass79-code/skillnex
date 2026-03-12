@@ -18,6 +18,8 @@ export default function Community() {
   }, []);
 
   const handlePost = async () => {
+    if (!text.trim()) return;
+
     try {
       const res = await fetch("/api/posts", {
         method: "POST",
@@ -29,19 +31,17 @@ export default function Community() {
         })
       });
 
-      const result = await res.json();
-
-      console.log("POST RESPONSE:", result);
-
       if (!res.ok) {
-        alert("Error: " + JSON.stringify(result));
+        alert("Post failed");
         return;
       }
 
-      const response = await fetch("/api/posts");
-      const data = await response.json();
+      const updated = await fetch("/api/posts");
+      const data = await updated.json();
+
       setPosts(data.posts);
       setText("");
+
     } catch (err) {
       console.error(err);
       alert("Network error");
