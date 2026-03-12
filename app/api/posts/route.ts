@@ -31,6 +31,8 @@ export async function POST(req: Request) {
 
   const { content, user_id } = body;
 
+  console.log("POST /api/posts — received user_id:", user_id, "content:", content);
+
   const { data, error } = await supabase
     .from("posts")
     .insert([
