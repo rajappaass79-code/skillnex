@@ -8,6 +8,19 @@ export default function Community() {
   const [post, setPost] = useState("")
   const [posts, setPosts] = useState<any[]>([])
 
+  useEffect(() => {
+    loadPosts()
+  }, [])
+
+  async function loadPosts() {
+    const res = await fetch("/api/posts")
+    const data = await res.json()
+
+    if (data.posts) {
+      setPosts(data.posts)
+    }
+  }
+
   const handlePost = async () => {
     const { data: { user } } = await supabase!.auth.getUser()
 
