@@ -8,17 +8,14 @@ export default function Community() {
   const [text, setText] = useState("");
 
   useEffect(() => {
-    loadPosts()
-  }, [])
+    const loadPosts = async () => {
+      const res = await fetch("/api/posts");
+      const data = await res.json();
+      setPosts(data.posts);
+    };
 
-  async function loadPosts() {
-    const res = await fetch("/api/posts")
-    const data = await res.json()
-
-    if (data.posts) {
-      setPosts(data.posts)
-    }
-  }
+    loadPosts();
+  }, []);
 
   const handlePost = async () => {
     if (!text.trim()) return;
