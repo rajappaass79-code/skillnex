@@ -21,21 +21,28 @@ export default function Community() {
   }
 
   const handlePost = async () => {
+    if (!text.trim()) return;
+
     const res = await fetch("/api/posts", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({ content: text })
-    })
+    });
 
-    if (res.ok) {
-      const data = await fetch("/api/posts")
-      const json = await data.json()
-      setPosts(json.posts)
-      setText("")
+    if (!res.ok) {
+      alert("Post failed");
+      return;
     }
-  }
+
+    // reload posts after successful post
+    const response = await fetch("/api/posts");
+    const data = await response.json();
+
+    setPosts(data.posts);
+    setText("");
+  };
 
   return (
     <div style={{ padding: 20 }}>
