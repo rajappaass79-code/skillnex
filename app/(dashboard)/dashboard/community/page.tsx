@@ -1,42 +1,44 @@
 'use client'
 
 import { useState } from "react"
+import { supabase } from "@/lib/supabaseClient"
 
 export default function Community() {
 
-  const [post,setPost] = useState("")
-  const [message,setMessage] = useState("")
+  const [post, setPost] = useState("")
 
   const handlePost = async () => {
-    console.log("POST BUTTON CLICKED");
+    const { data: { user } } = await supabase!.auth.getUser()
 
-    const res = await fetch("/api/posts", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        content: post,
-      }),
-    });
+    const { error } = await supabase!
+      .from("Posts")
+      .insert([
+        {
+          content: post,
+          user_id: user!.id
+        }
+      ])
 
-    const data = await res.json();
-    console.log("API RESPONSE:", data);
-  };
+    if (error) {
+      console.error(error)
+      alert("Error posting")
+    } else {
+      alert("Post created!")
+    }
+  }
 
   return (
-
-    <div style={{padding:20}}>
+    <div style={{ padding: 20 }}>
 
       <h1>Community</h1>
 
       <textarea
         placeholder="Share an idea with other educators..."
         value={post}
-        onChange={(e)=>setPost(e.target.value)}
+        onChange={(e) => setPost(e.target.value)}
       />
 
-      <br/><br/>
+      <br /><br />
 
       <button
         onClick={handlePost}
@@ -44,8 +46,6 @@ export default function Community() {
       >
         Post
       </button>
-
-      <p>{message}</p>
 
     </div>
   )
