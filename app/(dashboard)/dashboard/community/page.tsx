@@ -71,7 +71,7 @@ export default function Community() {
       <div className="mt-6 space-y-4">
         {posts.map((post) => (
           <div key={post.id} className="p-4 border rounded mb-3">
-            <p className="font-semibold">{post.name || "Educator"}</p>
+            <p className="font-semibold">{post.profiles?.full_name || "Educator"}</p>
             <p>{post.content}</p>
             <p className="text-sm text-gray-500">
               {new Date(post.created_at).toLocaleString()}
