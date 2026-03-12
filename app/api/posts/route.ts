@@ -8,7 +8,14 @@ const supabase = createClient(
 export async function GET() {
   const { data, error } = await supabase
     .from("posts")
-    .select("*")
+    .select(`
+      id,
+      content,
+      created_at,
+      profiles (
+        full_name
+      )
+    `)
     .order("created_at", { ascending: false });
 
   if (error) {
