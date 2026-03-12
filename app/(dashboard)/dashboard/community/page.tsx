@@ -31,9 +31,8 @@ export default function Community() {
       <br/><br/>
 
       <button
-        onClick={() => {
-          console.log("POST BUTTON CLICKED");
-        }}
+        onClick={handlePost}
+        className="..."
       >
         Post
       </button>
