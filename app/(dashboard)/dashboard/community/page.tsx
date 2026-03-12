@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useEffect } from "react"
-import { supabase } from "@/lib/supabaseClient"
 
 export default function Community() {
 
@@ -22,25 +21,20 @@ export default function Community() {
   }
 
   const handlePost = async () => {
-    const { data: { user } } = await supabase!.auth.getUser()
+    const res = await fetch("/api/posts", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        user_id: crypto.randomUUID(),
+        content: post
+      })
+    })
 
-    if (!user) {
-      alert("Not logged in. Please log in first.")
-      return
-    }
+    const data = await res.json()
 
-    const { error } = await supabase!
-      .from("Posts")
-      .insert([
-        {
-          content: post,
-          user_id: user.id
-        }
-      ])
-
-    if (error) {
-      console.error("SUPABASE ERROR:", error)
-      alert("Error: " + error.message + " (code: " + error.code + ")")
+    if (!res.ok) {
+      console.error("POST ERROR:", data)
+      alert("Error: " + data.error)
     } else {
       alert("Post created!")
       setPost("")
