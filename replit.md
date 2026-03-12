@@ -78,9 +78,30 @@ CREATE POLICY "Users can insert own profile" ON profiles FOR INSERT WITH CHECK (
 CREATE POLICY "Users can update own profile" ON profiles FOR UPDATE USING (auth.uid() = id);
 ```
 
+## Supabase Table: Posts
+- `id` (uuid, primary key)
+- `user_id` (uuid)
+- `name` (text) — display name of the poster
+- `content` (text) — post body
+- `created_at` (timestamp with time zone)
+
+## Community Feature
+- Route: `/dashboard/community`
+- Posts are created via `POST /api/posts` with `{ user_id, name, content }`
+- Posts are fetched via `GET /api/posts` ordered by `created_at` descending
+- API routes use `NEXT_PUBLIC_SUPABASE_URL` + `SUPABASE_ANON_KEY`
+- Supabase RLS fixed and working — posts save and load correctly
+
+## Navigation
+Dashboard layout includes nav bar with three links:
+- Dashboard (`/dashboard`)
+- AI Assistant (`/dashboard/ai-assistant`)
+- Community (`/dashboard/community`)
+
 ## Environment Variables
 - `NEXT_PUBLIC_SUPABASE_URL` — Supabase project URL
-- `NEXT_PUBLIC_SUPABASE_ANON_KEY` — Supabase anon/public key
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY` — Supabase anon/public key (client-side)
+- `SUPABASE_ANON_KEY` — Supabase anon key (server-side API routes)
 
 ## Path Aliases
 - `@/*` maps to the project root
