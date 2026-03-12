@@ -22,11 +22,12 @@ export async function GET() {
 export async function POST(req: Request) {
   const body = await req.json()
 
-  const { user_id, content } = body
+  const { user_id, name, content } = body
 
   const { data, error } = await supabase.from("Posts").insert([
     {
       user_id,
+      name,
       content,
       created_at: new Date()
     }
