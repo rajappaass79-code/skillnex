@@ -1,26 +1,32 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
-
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { user_id, content } = body;
+    console.log("REQUEST BODY:", body);
+
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    );
+
+    const { content, user_id } = body;
 
     const { data, error } = await supabase
       .from("Posts")
-      .insert([{ user_id, content }]);
+      .insert([{ content, user_id }])
+      .select();
 
     if (error) {
-      return NextResponse.json({ error: error.message }, { status: 500 });
+      console.error("SUPABASE ERROR:", error);
+      return NextResponse.json({ error }, { status: 500 });
     }
 
     return NextResponse.json({ success: true, data });
+
   } catch (err) {
-    return NextResponse.json({ error: "Server error" }, { status: 500 });
+    console.error("SERVER ERROR:", err);
+    return NextResponse.json({ error: "Server crashed" }, { status: 500 });
   }
 }
