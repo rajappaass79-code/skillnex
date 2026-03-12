@@ -31,9 +31,22 @@ export async function POST(req: Request) {
   const authHeader = req.headers.get("Authorization")
   const token = authHeader?.replace("Bearer ", "")
 
+  console.log("POST /api/posts — token present:", !!token)
+
   if (!token) {
-    return Response.json({ error: "Unauthorized" }, { status: 401 })
+    return Response.json({ error: "Unauthorized - no token" }, { status: 401 })
   }
+
+  const { data: { user }, error: authError } = await supabase.auth.getUser(token)
+
+  console.log("POST /api/posts — user:", user?.id ?? "null", "authError:", authError?.message ?? "none")
+
+  if (authError || !user) {
+    return Response.json({ error: "Unauthorized - invalid token" }, { status: 401 })
+  }
+
+  const body = await req.json()
+  const { content } = body
 
   const userClient = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -47,21 +60,14 @@ export async function POST(req: Request) {
     }
   )
 
-  const { data: { user } } = await userClient.auth.getUser()
-
-  if (!user) {
-    return Response.json({ error: "Unauthorized" }, { status: 401 })
-  }
-
-  const body = await req.json()
-  const { content } = body
-
-  const { error } = await userClient
+  const { error: insertError } = await userClient
     .from("posts")
     .insert([{ content, user_id: user.id }])
 
-  if (error) {
-    return Response.json({ error: error.message }, { status: 500 })
+  console.log("POST /api/posts — insertError:", insertError?.message ?? "none")
+
+  if (insertError) {
+    return Response.json({ error: insertError.message }, { status: 500 })
   }
 
   return Response.json({ success: true })
