@@ -8,13 +8,21 @@ export default function Community() {
   const [message,setMessage] = useState("")
 
   const handlePost = async () => {
-    await fetch("/api/posts", {
+    console.log("POST BUTTON CLICKED");
+
+    const res = await fetch("/api/posts", {
       method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify({
-        content: post
-      })
-    })
-  }
+        content: post,
+      }),
+    });
+
+    const data = await res.json();
+    console.log("API RESPONSE:", data);
+  };
 
   return (
 
