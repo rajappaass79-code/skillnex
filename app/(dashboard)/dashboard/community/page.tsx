@@ -62,7 +62,7 @@ export default function Community() {
       </button>
 
       <div className="mt-6 space-y-4">
-        {posts?.map((post) => (
+        {posts.map((post) => (
           <div key={post.id} className="p-4 border rounded mb-3">
             <p className="font-semibold">{post.name || "Educator"}</p>
             <p>{post.content}</p>
