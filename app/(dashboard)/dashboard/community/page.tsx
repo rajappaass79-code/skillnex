@@ -1,10 +1,11 @@
 'use client'
 
 import { useState, useEffect } from "react"
-import { supabase } from "@/lib/supabaseClient"
+import { useAuth } from "@/lib/AuthContext"
 
 export default function Community() {
 
+  const { user } = useAuth();
   const [posts, setPosts] = useState([]);
   const [text, setText] = useState("");
 
@@ -22,8 +23,6 @@ export default function Community() {
     if (!text.trim()) return;
 
     try {
-      const { data: { user } } = await supabase!.auth.getUser();
-
       const res = await fetch("/api/posts", {
         method: "POST",
         headers: {
