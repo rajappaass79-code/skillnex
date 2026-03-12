@@ -12,7 +12,7 @@ export async function GET() {
       id,
       content,
       created_at,
-      profiles (
+      profiles:profiles!posts_user_profile_fk (
         full_name
       )
     `)
