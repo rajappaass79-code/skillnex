@@ -25,6 +25,7 @@ export async function GET() {
 export async function POST(req: Request) {
   try {
     const body = await req.json()
+    console.log("POST BODY:", body)
 
     const { content } = body
 
@@ -37,12 +38,9 @@ export async function POST(req: Request) {
 
     const { data, error } = await supabase
       .from("posts")
-      .insert([
-        {
-          content: content,
-          name: "Educator"
-        }
-      ])
+      .insert([{ content, name: "Educator" }])
+
+    console.log("SUPABASE ERROR:", error)
 
     if (error) {
       return new Response(JSON.stringify({ error: error.message }), {
