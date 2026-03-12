@@ -20,29 +20,37 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
-  const body = await req.json()
+  try {
+    const body = await req.json()
+    const { content } = body
 
-  console.log("POST BODY:", body)
+    if (!content) {
+      return new Response(JSON.stringify({ error: "Content required" }), {
+        status: 400
+      })
+    }
 
-  const { content } = body
+    const { data, error } = await supabase
+      .from("posts")
+      .insert([
+        {
+          content: content,
+          name: "Educator"
+        }
+      ])
 
-  const { data: { user } } = await supabase.auth.getUser()
+    if (error) {
+      return new Response(JSON.stringify({ error: error.message }), {
+        status: 500
+      })
+    }
 
-  const { data, error } = await supabase
-    .from("posts")
-    .insert([
-      {
-        user_id: user?.id,
-        content: content,
-        name: "Educator"
-      }
-    ])
-
-  console.log("INSERT ERROR:", error)
-
-  if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    return new Response(JSON.stringify({ message: "Post created" }), {
+      status: 200
+    })
+  } catch (err) {
+    return new Response(JSON.stringify({ error: "Server error" }), {
+      status: 500
+    })
   }
-
-  return NextResponse.json({ message: "Post created", data })
 }
