@@ -4,8 +4,8 @@ import { useState, useEffect } from "react"
 
 export default function Community() {
 
-  const [text, setText] = useState("")
-  const [posts, setPosts] = useState<any[]>([])
+  const [posts, setPosts] = useState([]);
+  const [text, setText] = useState("");
 
   useEffect(() => {
     loadPosts()
