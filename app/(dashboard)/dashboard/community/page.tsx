@@ -66,20 +66,11 @@ export default function Community() {
       </button>
 
       <div className="mt-6 space-y-4">
-        {posts.map((post) => (
-          <div
-            key={post.id}
-            className="p-4 border rounded-lg bg-white shadow-sm"
-          >
-            <p className="font-semibold">
-              {post.profiles?.full_name || "Educator"}
-            </p>
+        {posts?.map((post) => (
+          <div key={post.id} className="p-4 border rounded mb-3">
+            <p className="font-semibold">{post.name || "Educator"}</p>
+            <p>{post.content}</p>
             <p className="text-sm text-gray-500">
-              {post.profiles?.Subject} • {post.profiles?.Institution}
-            </p>
-            <p className="text-gray-800">{post.content}</p>
-
-            <p className="text-xs text-gray-400 mt-2">
               {new Date(post.created_at).toLocaleString()}
             </p>
           </div>
