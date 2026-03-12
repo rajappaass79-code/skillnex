@@ -44,6 +44,7 @@ export default function Community() {
     } else {
       alert("Post created!")
       setPost("")
+      await loadPosts()
     }
   }
 
