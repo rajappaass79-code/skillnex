@@ -6,6 +6,7 @@ import { supabase } from "@/lib/supabaseClient"
 export default function Community() {
 
   const [post, setPost] = useState("")
+  const [posts, setPosts] = useState<any[]>([])
 
   const handlePost = async () => {
     const { data: { user } } = await supabase!.auth.getUser()
