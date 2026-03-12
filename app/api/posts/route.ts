@@ -8,7 +8,7 @@ const supabase = createClient(
 
 export async function GET() {
   const { data, error } = await supabase
-    .from("Posts")
+    .from("posts")
     .select("*")
     .order("created_at", { ascending: false })
 
@@ -24,7 +24,7 @@ export async function POST(req: Request) {
 
   const { user_id, name, content } = body
 
-  const { data, error } = await supabase.from("Posts").insert([
+  const { data, error } = await supabase.from("posts").insert([
     {
       user_id,
       name,
