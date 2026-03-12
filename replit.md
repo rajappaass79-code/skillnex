@@ -87,10 +87,12 @@ CREATE POLICY "Users can update own profile" ON profiles FOR UPDATE USING (auth.
 
 ## Community Feature
 - Route: `/dashboard/community`
-- Posts are created via `POST /api/posts` with `{ user_id, name, content }`
+- Posts are created via `POST /api/posts` with `{ content }` — name hardcoded as "Educator"
 - Posts are fetched via `GET /api/posts` ordered by `created_at` descending
-- API routes use `NEXT_PUBLIC_SUPABASE_URL` + `SUPABASE_ANON_KEY`
-- Supabase RLS fixed and working — posts save and load correctly
+- API routes use `NEXT_PUBLIC_SUPABASE_URL` + `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+- Both endpoints use native `Response.json()` pattern
+- Supabase RLS fixed — posts saving and loading correctly
+- Posts table schema rebuilt and stabilized
 
 ## Navigation
 Dashboard layout includes nav bar with three links:
