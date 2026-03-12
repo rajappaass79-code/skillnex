@@ -10,20 +10,26 @@ export default function Community() {
   const handlePost = async () => {
     const { data: { user } } = await supabase!.auth.getUser()
 
+    if (!user) {
+      alert("Not logged in. Please log in first.")
+      return
+    }
+
     const { error } = await supabase!
       .from("Posts")
       .insert([
         {
           content: post,
-          user_id: user!.id
+          user_id: user.id
         }
       ])
 
     if (error) {
-      console.error(error)
-      alert("Error posting")
+      console.error("SUPABASE ERROR:", error)
+      alert("Error: " + error.message + " (code: " + error.code + ")")
     } else {
       alert("Post created!")
+      setPost("")
     }
   }
 
