@@ -15,7 +15,13 @@ export async function POST(req: Request) {
 
     const { data, error } = await supabase
       .from("Posts")
-      .insert([{ content, user_id }])
+      .insert([
+        {
+          content,
+          user_id,
+          created_at: new Date().toISOString()
+        }
+      ])
       .select();
 
     if (error) {
