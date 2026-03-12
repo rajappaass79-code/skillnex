@@ -1,10 +1,11 @@
 'use client'
 
 import { useState, useEffect } from "react"
+import { supabase } from "@/lib/supabaseClient"
 
 export default function Community() {
 
-  const [post, setPost] = useState("")
+  const [text, setText] = useState("")
   const [posts, setPosts] = useState<any[]>([])
 
   useEffect(() => {
@@ -21,23 +22,25 @@ export default function Community() {
   }
 
   const handlePost = async () => {
-    const res = await fetch("/api/posts", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        user_id: crypto.randomUUID(),
-        content: post
-      })
+    const { data: { user } } = await supabase!.auth.getUser()
+
+    if (!user) {
+      alert("Not logged in. Please log in first.")
+      return
+    }
+
+    const { error } = await supabase!.from("posts").insert({
+      user_id: user.id,
+      name: "Educator",
+      content: text
     })
 
-    const data = await res.json()
-
-    if (!res.ok) {
-      console.error("POST ERROR:", data)
-      alert("Error: " + data.error)
+    if (error) {
+      console.error("POST ERROR:", error)
+      alert("Error: " + error.message)
     } else {
       alert("Post created!")
-      setPost("")
+      setText("")
       await loadPosts()
     }
   }
@@ -49,8 +52,8 @@ export default function Community() {
 
       <textarea
         placeholder="Share an idea with other educators..."
-        value={post}
-        onChange={(e) => setPost(e.target.value)}
+        value={text}
+        onChange={(e) => setText(e.target.value)}
       />
 
       <br /><br />
