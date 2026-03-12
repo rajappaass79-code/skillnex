@@ -71,7 +71,12 @@ export default function Community() {
             key={post.id}
             className="p-4 border rounded-lg bg-white shadow-sm"
           >
-            <p className="font-semibold">{post.name}</p>
+            <p className="font-semibold">
+              {post.profiles?.full_name || "Educator"}
+            </p>
+            <p className="text-sm text-gray-500">
+              {post.profiles?.Subject} • {post.profiles?.Institution}
+            </p>
             <p className="text-gray-800">{post.content}</p>
 
             <p className="text-xs text-gray-400 mt-2">
