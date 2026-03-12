@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from "react"
+import { supabase } from "@/lib/supabaseClient"
 
 export default function Community() {
 
@@ -21,13 +22,16 @@ export default function Community() {
     if (!text.trim()) return;
 
     try {
+      const { data: { user } } = await supabase!.auth.getUser();
+
       const res = await fetch("/api/posts", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          content: text
+          content: text,
+          user_id: user?.id
         })
       });
 

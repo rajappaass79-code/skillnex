@@ -29,15 +29,13 @@ export async function GET() {
 export async function POST(req: Request) {
   const body = await req.json();
 
-  const { content } = body;
-
-  const { data: { user } } = await supabase.auth.getUser();
+  const { content, user_id } = body;
 
   const { data, error } = await supabase
     .from("posts")
     .insert([
       {
-        user_id: user?.id,
+        user_id: user_id,
         content: content
       }
     ]);
