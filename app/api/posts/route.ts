@@ -22,16 +22,19 @@ export async function GET() {
 export async function POST(req: Request) {
   const body = await req.json()
 
-  const { user_id, name, content } = body
+  const { content } = body
 
-  const { data, error } = await supabase.from("posts").insert([
-    {
-      user_id,
-      name,
-      content,
-      created_at: new Date()
-    }
-  ])
+  const { data: { user } } = await supabase.auth.getUser()
+
+  const { data, error } = await supabase
+    .from("posts")
+    .insert([
+      {
+        user_id: user?.id,
+        content: content,
+        name: "Educator"
+      }
+    ])
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 })
