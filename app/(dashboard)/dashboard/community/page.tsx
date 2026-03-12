@@ -19,39 +19,36 @@ export default function Community() {
   }, []);
 
   const handlePost = async () => {
-    if (!text.trim()) return;
 
-    try {
-      const { data: { session } } = await supabase!.auth.getSession();
-      const userId = session?.user?.id ?? null;
+    const { data: { user } } = await supabase!.auth.getUser()
 
-      const res = await fetch("/api/posts", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          content: text,
-          user_id: userId
-        })
-      });
-
-      if (!res.ok) {
-        alert("Post failed");
-        return;
-      }
-
-      const updated = await fetch("/api/posts");
-      const data = await updated.json();
-
-      setPosts(data.posts);
-      setText("");
-
-    } catch (err) {
-      console.error(err);
-      alert("Network error");
+    if (!user) {
+      alert("User not logged in")
+      return
     }
-  };
+
+    const res = await fetch("/api/posts", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        content: text,
+        user_id: user.id
+      })
+    })
+
+    if (!res.ok) {
+      alert("Post failed")
+      return
+    }
+
+    const response = await fetch("/api/posts")
+    const data = await response.json()
+
+    setPosts(data.posts)
+    setText("")
+  }
 
   return (
     <div style={{ padding: 20 }}>
