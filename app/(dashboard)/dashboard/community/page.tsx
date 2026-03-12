@@ -18,27 +18,34 @@ export default function Community() {
   }, []);
 
   const handlePost = async () => {
-    if (!text.trim()) return;
+    try {
+      const res = await fetch("/api/posts", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          content: text
+        })
+      });
 
-    const res = await fetch("/api/posts", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ content: text })
-    });
+      const result = await res.json();
 
-    if (!res.ok) {
-      alert("Post failed");
-      return;
+      console.log("POST RESPONSE:", result);
+
+      if (!res.ok) {
+        alert("Error: " + JSON.stringify(result));
+        return;
+      }
+
+      const response = await fetch("/api/posts");
+      const data = await response.json();
+      setPosts(data.posts);
+      setText("");
+    } catch (err) {
+      console.error(err);
+      alert("Network error");
     }
-
-    // reload posts after successful post
-    const response = await fetch("/api/posts");
-    const data = await response.json();
-
-    setPosts(data.posts);
-    setText("");
   };
 
   return (
