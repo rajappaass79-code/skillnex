@@ -46,3 +46,4 @@ waitForPort = 5000
 
 [userenv.shared]
 NEXT_PUBLIC_SUPABASE_URL = "https://ctxskwdnmluqhhjowupa.supabase.co"
+NEXT_PUBLIC_SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN0eHNrd2RubWx1cWhoam93dXBhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI1NjI2NzIsImV4cCI6MjA4ODEzODY3Mn0.Pz-VihcIxTXHJG3FSYEMN-wx77d4sA4tKDxJ3Z_jmyQ"
