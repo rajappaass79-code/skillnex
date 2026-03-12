@@ -10,8 +10,11 @@ export async function GET() {
   const { data, error } = await supabase
     .from("posts")
     .select(`
-      *,
-      profiles (
+      id,
+      content,
+      created_at,
+      user_id,
+      profiles:profiles!posts_user_id_fkey (
         full_name,
         Institution,
         Subject
