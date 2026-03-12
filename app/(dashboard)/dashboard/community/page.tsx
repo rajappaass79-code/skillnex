@@ -20,9 +20,9 @@ export default function Community() {
 
   const handlePost = async () => {
 
-    const { data: { user } } = await supabase!.auth.getUser()
+    const { data: { session } } = await supabase!.auth.getSession()
 
-    if (!user) {
+    if (!session) {
       alert("User not logged in")
       return
     }
@@ -30,11 +30,11 @@ export default function Community() {
     const res = await fetch("/api/posts", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${session.access_token}`
       },
       body: JSON.stringify({
-        content: text,
-        user_id: user.id
+        content: text
       })
     })
 
