@@ -22,6 +22,8 @@ export async function GET() {
 export async function POST(req: Request) {
   const body = await req.json()
 
+  console.log("POST BODY:", body)
+
   const { content } = body
 
   const { data: { user } } = await supabase.auth.getUser()
@@ -35,6 +37,8 @@ export async function POST(req: Request) {
         name: "Educator"
       }
     ])
+
+  console.log("INSERT ERROR:", error)
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 })
