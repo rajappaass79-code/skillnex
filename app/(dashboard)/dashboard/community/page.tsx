@@ -27,14 +27,21 @@ export default function Community() {
       return
     }
 
+    const { data: profile } = await supabase!
+      .from("profiles")
+      .select("full_name")
+      .eq("id", session.user.id)
+      .single()
+
     const res = await fetch("/api/posts", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${session.access_token}`
+        "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        content: text
+        content: text,
+        user_id: session.user.id,
+        name: profile?.full_name ?? "Educator"
       })
     })
 
@@ -73,7 +80,7 @@ export default function Community() {
       <div className="mt-6 space-y-4">
         {posts.map((post) => (
           <div key={post.id} className="p-4 border rounded mb-3">
-            <p className="font-semibold">{post.profiles?.full_name || "Educator"}</p>
+            <p className="font-semibold">{post.name || "Educator"}</p>
             <p>{post.content}</p>
             <p className="text-sm text-gray-500">
               {new Date(post.created_at).toLocaleString()}
