@@ -20,9 +20,9 @@ export default function Community() {
 
   const handlePost = async () => {
 
-    const { data: { session } } = await supabase!.auth.getSession()
+    const { data: { user } } = await supabase!.auth.getUser()
 
-    if (!session) {
+    if (!user) {
       alert("User not logged in")
       return
     }
@@ -30,7 +30,7 @@ export default function Community() {
     const { data: profile } = await supabase!
       .from("profiles")
       .select("full_name")
-      .eq("id", session.user.id)
+      .eq("id", user.id)
       .single()
 
     const res = await fetch("/api/posts", {
@@ -40,8 +40,8 @@ export default function Community() {
       },
       body: JSON.stringify({
         content: text,
-        user_id: session.user.id,
-        name: profile?.full_name ?? "Educator"
+        user_id: user.id,
+        name: profile?.full_name
       })
     })
 
@@ -50,8 +50,8 @@ export default function Community() {
       return
     }
 
-    const response = await fetch("/api/posts")
-    const data = await response.json()
+    const updated = await fetch("/api/posts")
+    const data = await updated.json()
 
     setPosts(data.posts)
     setText("")
